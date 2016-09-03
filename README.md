@@ -12,6 +12,8 @@ Currently, this includes
  * item cards, and
  * postage stamps.
 
+If you have any questions or suggestions, don't hesitate to 
+  [open an issue](https://github.com/akerbos/dh-tools/issues/new).
 
 ## Setup
 
