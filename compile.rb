@@ -114,7 +114,7 @@ files.each { |file|
   end
   
   # Now we parse the JSON
-  data = send("read_#{jobtype.to_s}", file)
+  data = send("read_#{jobtype.to_s}", file, false)
   if data.nil? || data.empty?
     puts "Error: #{jobtype.to_s} data could not be read."
     next

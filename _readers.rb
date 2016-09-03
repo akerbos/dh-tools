@@ -65,10 +65,10 @@ class DHChar < DHData
   end
 end
 
-def read_char(file)
+def read_char(file, quiet=true)
   char = nil 
   
-  puts "\nReading character #{file}"
+  puts "\nReading character #{file}" unless quiet
 
   File.open(file, "r") { |f|
     char = JSON.parse(f.read)
@@ -85,28 +85,28 @@ def read_char(file)
   allowed_disciplines = ["combat", "covert", "mystic", "research", "social", "fringe"]
 
   if char["aspects"]["discipline"].size > 3
-    puts "Warning: only three discipline aspects allowed"
+    puts "Warning: only three discipline aspects allowed" unless quiet
   elsif char["aspects"]["discipline"].keys.size != char["aspects"]["discipline"].keys.uniq.size
-    puts "Warning: only one aspect per discipline allowed!"
+    puts "Warning: only one aspect per discipline allowed!" unless quiet
   end
   char["aspects"]["discipline"].each_key { |k|
     if !allowed_disciplines.include?(k)
-      puts "Warning: illegal discipline identifier '#{k}'"
+      puts "Warning: illegal discipline identifier '#{k}'" unless quiet
     end
     if (char["disciplines"][k].kind_of?(Array) ? char["disciplines"][k][2] : char["disciplines"][k]) < 6 
-      puts "Warning: only discplines with values >=6 should have aspects"
+      puts "Warning: only discplines with values >=6 should have aspects" unless quiet
     end
   }
 
   char["approaches"].merge(char["disciplines"]).each_pair { |k,v|
     if k != "fringe" && !allowed_values.include?(v.to_i)
-      puts "Warning: illegal #{k} value '#{v.to_s}'."
+      puts "Warning: illegal #{k} value '#{v.to_s}'." unless quiet
     end
   } 
 
   fringe = char["disciplines"]["fringe"]
   if ![nil, false].include?(fringe) && ( !fringe.kind_of?(Array) || (fringe.kind_of?(Array) && (fringe.size < 3 || !fringe[0].kind_of?(String) || !fringe[1].kind_of?(String) || !allowed_values.include?(fringe[2].to_i))) )
-    puts "Warning: fringe value needs to be null, false, or an array with two strings and one of 4,6,8,10,12."
+    puts "Warning: fringe value needs to be null, false, or an array with two strings and one of 4,6,8,10,12." unless quiet
     fringe = nil
   end
 
@@ -115,13 +115,13 @@ def read_char(file)
   end
 
   if !char["chapter"].kind_of?(Array) || char["chapter"].size < 2
-    puts "Warning: chapter needs to be an array with a greek letter and a number."
+    puts "Warning: chapter needs to be an array with a greek letter and a number." unless quiet
   else
     char["chapter"][0].capitalize!
   end
   
   if !char["conditions"].kind_of?(Array)
-    puts "Warning: conditions needs to be an array (of integers)."
+    puts "Warning: conditions needs to be an array (of integers)." unless quiet
     char["conditions"] = []
   end
   char["conditions"].map! { |e| e.to_i }
@@ -180,7 +180,7 @@ class DHChapter < DHData
   end
 end
 
-def read_chapter(file)
+def read_chapter(file, quiet=true)
   chapter = nil 
 
   puts "\nReading chapter #{file}"
@@ -195,11 +195,11 @@ def read_chapter(file)
   
   # Perform sanity checks
   if chapter["aspects"].size > (0.5 * chapter["members"].size).ceil
-    puts "Warning: chapters should have at most #players / 2 (rounded up) aspects."
+    puts "Warning: chapters should have at most #players / 2 (rounded up) aspects." unless quiet
   end
   ["aspects", "members", "gear", "temps"].each { |i|
     if !chapter.has_key?(i) || !chapter[i].kind_of?(Array)
-      puts "Warning: #{i} has to be an array"
+      puts "Warning: #{i} has to be an array" unless quiet
       chapter[i] = [chapter[i]].compact
     end
   }
@@ -212,7 +212,7 @@ def read_chapter(file)
       chapter["leader"] = c if chapter["leader"] == char
       characters.push(c) 
     else
-      puts "\nWarning: character file #{char}.char not found; skipping."
+      puts "\nWarning: character file #{char}.char not found; skipping." unless quiet
     end
   }
   chapter["members"] = characters
@@ -227,7 +227,7 @@ def read_chapter(file)
       c = read_char("#{char}.char")
       characters.push(c) 
     else
-      puts "\nWarning: character file #{char}.char not found; skipping."
+      puts "\nWarning: character file #{char}.char not found; skipping." unless quiet
     end
   }
   chapter["temps"] = characters
@@ -239,7 +239,7 @@ def read_chapter(file)
       g = read_gear("#{gear}.gear")
       items.push(g) 
     else
-      puts "\nWarning: gear file #{gear}.gear not found; skipping."
+      puts "\nWarning: gear file #{gear}.gear not found; skipping." unless quiet
     end
   }
   chapter["gear"] = items
@@ -265,7 +265,7 @@ class DHGear < DHData
   end
 end
 
-def read_gear(file)
+def read_gear(file, quiet=true)
   item = nil 
 
   puts "\nReading item #{file}"
@@ -331,7 +331,7 @@ class DHEncounter < DHData
   end
 end
 
-def read_encounter(file)
+def read_encounter(file, quiet=true)
   encounter = nil 
 
   puts "\nReading encounter #{file}"
@@ -345,7 +345,7 @@ def read_encounter(file)
   end
   
   if !encounter.has_key?("title")
-    puts "Warning: encounter has no title"
+    puts "Warning: encounter has no title" unless quiet
     encounter["title"] = ""
   end
   
@@ -354,17 +354,17 @@ def read_encounter(file)
       if !creature.kind_of?(Hash)
         if File.exist?("#{creature.to_s}.char") # TODO extend to DMCs
           group[i] = read_char("#{creature.to_s}.char")
-          puts ""
+          puts "" unless quiet
           group[i]["number"] = 1
         else
-          puts "Warning: file #{creature.to_s}.char not found"
+          puts "Warning: file #{creature.to_s}.char not found" unless quiet
           group[i] = { "name" => creature.to_s }
         end
         creature = group[i]
       end
       
       if !creature.has_key?("conditions")
-        puts "Warning: #{creature["name"]} has no conditions"
+        puts "Warning: #{creature["name"]} has no conditions" unless quiet
         creature["conditions"] = []
       end
       
