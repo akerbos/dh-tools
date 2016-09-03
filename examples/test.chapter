@@ -1,0 +1,14 @@
+{
+  "name" : ["Omega", 15],
+  "nickname" : "The Sobby Diggers",
+  "base" : "CERN, Switzerland",
+  "members" : ["testC", "testC", "testC", "testC"],
+  "temps" : ["testC"],
+  "leader" : "testC",
+  "aspects" : [
+    "Ouchy I gots an Ouchy",
+    "Moles with Bandaids"
+  ],
+  "description" : "Something.",
+  "gear" : ["testG","testG"]
+}

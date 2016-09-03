@@ -1,0 +1,83 @@
+<%
+# Copyright 2016, Raphael Reitzig
+#
+# dh-tools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dh-tools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
+%>
+\documentclass{article}
+
+\usepackage[a4paper,landscape]{geometry}
+\usepackage{tikz,graphicx,textgreek,xifthen,tcolorbox,adjustbox,relsize}
+\usetikzlibrary{calc,positioning}
+\tcbuselibrary{skins}
+
+\usepackage{fontspec}
+\setmainfont{<%= fill_font %>}[Scale=1]
+
+\pagestyle{empty}
+
+\newcommand{\dhbox}[5]{%
+  \def\cornerrad{#3}
+  \def\side{#2}
+  % TODO plain if smaller, stretch if larger than \side?
+  \ifthenelse{\isempty{#5}}{%
+    \draw[line width=#4] ($#1$)
+        -- ++(0,\side/2) 
+        -- ++(\cornerrad,\cornerrad) -- ++(\side,0) 
+        -- ++(\cornerrad,-\cornerrad) -- ++(0,-\side)
+        -- ++(-\cornerrad,-\cornerrad) -- ++(-\side,0)
+        -- ++(-\cornerrad,\cornerrad) -- cycle;%
+  }{%
+    \draw[line width=#4,fill stretch image=#5] ($#1$)
+        -- ++(0,\side/2) 
+        -- ++(\cornerrad,\cornerrad) -- ++(\side,0) 
+        -- ++(\cornerrad,-\cornerrad) -- ++(0,-\side)
+        -- ++(-\cornerrad,-\cornerrad) -- ++(-\side,0)
+        -- ++(-\cornerrad,\cornerrad) -- cycle;%
+  }%
+}
+
+\usepackage{hyperref}
+
+\begin{document}
+<%   pagepart = :top  # will be flipped by the page template
+     anchor = { :x => 0, :y => 0 } # in mm
+     width = if fold then 64.5 else 66 end  # in mm
+     sep = 5     # in mm
+     cols = 1 
+     separator = false %>
+
+<%=  ERB.new(pagelatex, safe_level, trim_mode, '_sub01').result(binding) %>
+<%=  ERB.new(chaplatex, safe_level, trim_mode, '_sub02').result(binding) %>
+
+<%  (chapter["members"] + chapter["temps"]).each_with_index { |char,i|
+      if cols == 0 %>
+        \clearpage     
+<%=     ERB.new(pagelatex, safe_level, trim_mode, "_sub03_#{cols}").result(binding) %>     
+<%    end
+      anchor = { :x => cols*(width + sep), :y => 0 } 
+      cols += 1 
+      separator = (i == chapter["members"].size) %>
+    
+<%=   ERB.new(charlatex, safe_level, trim_mode, "_sub04_#{cols}").result(binding) %>
+    
+<%    if cols == 4 # Page is full; depends on the width defined above! %>
+<%=     ERB.new(pagelatex, safe_level, trim_mode, "_sub05_#{cols}").result(binding) %>
+<%      cols = 0
+      end
+    }
+    if cols > 0 %>
+<%=   ERB.new(pagelatex, safe_level, trim_mode, '_sub06').result(binding) %>
+<%  end %>
+  
+\end{document}

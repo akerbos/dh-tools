@@ -1,0 +1,26 @@
+{
+  "title" : "Some Random Battle",
+  "groups" : {
+    "Omega 15" : [
+      "testC",
+      "testC",
+      {
+        "name" : "A Heavy Ally",
+        "conditions" : [4,3,2]
+      }
+    ],
+    "Mysterious Foes" : [
+      {
+        "name" : "A Big Foe",
+        "conditions" : [3,2]
+      },
+      {
+        "name" : "Minion Foe",
+        "conditions" : [2,1],
+        "number" : 3  
+      }
+    ],
+    // Some blank entries in case we need to add something spontaneously.
+    "" : [{"name" : "", "conditions" : [3,2,1], "number" : 5}]
+  }
+}

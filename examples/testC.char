@@ -1,0 +1,39 @@
+{
+  "name" : "John Doe",
+  "description" : "Some text that **may** be longer than strictly necessary. One may even begin rambling, *just* for the sake of positioning the linebreak correctly.",
+  "image" : "spade.png",
+  "devotion" : 3,
+  "chapter" : ["Psi", 7],
+  "aspects" : {
+    "concept" : "Nondescript but may be recognizable if seen up close.",
+    "trouble" : "Nobody knows me",
+    "discipline" : {
+      "covert" : "Moves unseen",
+      "social" : "Knows everybody",
+      "mystic" : "Died many, many, many times"
+    }
+  },
+  "approaches" : {
+    "careful"  : 10,
+    "quick"    : 8,
+    "clever"   : 8,
+    "forceful" : 6,
+    "sneaky"   : 6,
+    "flashy"   : 4
+  },
+  "disciplines" : {
+    "combat"   : 10,
+    "covert"   : 8,
+    "mystic"   : 6,
+    "research" : 4,
+    "social"   : 4,
+    "fringe"   : ["Fairy", "Fairy", 6]
+  },
+  "conditions" : [3,2,1],
+  "stunts" : [
+    "Because I look like anybody, I gain **+2** when I **Sneakily Create an Advantage** in a crowd.",
+    "Your stunt 2 here",
+    "Your stunt 3 here",
+    "Your stunt 4 here"
+  ]
+}

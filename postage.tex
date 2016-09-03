@@ -1,0 +1,19 @@
+\documentclass[a4paper]{standalone}
+\usepackage[utf8]{inputenc}
+
+\usepackage{tikz,graphicx}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \draw[ultra thick] (0,0) rectangle +(3.5cm,1.5cm);
+  \node[align=center,text width=2cm] at (2.25cm, 0.75cm) { \texttt{Entgelt bezahlt} };
+  \node at (0.75cm,0.75cm) {\includegraphics[width=0.9cm]{resources/dh_icon}};
+\end{tikzpicture}
+\begin{tikzpicture}
+  \draw[ultra thick] (0,0) rectangle +(3.5cm,1.5cm);
+  \node[align=center,text width=2cm] at (2.25cm, 0.75cm) { \texttt{Postage paid} };
+  \node at (0.75cm,0.75cm) {\includegraphics[width=0.9cm]{resources/dh_icon}};
+\end{tikzpicture}
+
+\end{document}

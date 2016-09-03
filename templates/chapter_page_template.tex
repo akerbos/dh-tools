@@ -1,0 +1,41 @@
+<%
+# Copyright 2016, Raphael Reitzig
+#
+# dh-tools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dh-tools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
+%>
+<% if pagepart == :top %>
+  \begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm]
+    \node[anchor=north west,inner sep=0pt] (logo) 
+      at ($(current page.north west) + (<%= if fold then 15 else 5 end %>mm,-5mm)$)
+      {\includegraphics[width=5cm]{<%= logo %>}};
+      
+    % Chapter
+    \dhbox{(current page.north east) + (-21mm,-13mm)}{1cm}{3mm}{1.3pt}{}
+    \node[scale=2.5] (chapter) at ($(current page.north east) + (-13mm,-13mm)$) {%
+      {\textsmaller{\fontspec{lmroman10regular}\text<%= chapter["name"][0] %>}}%
+        <%= chapter["name"][1] %>%
+    };
+      
+    % Separator lines
+    \draw[line width=1.3pt]
+      ($(logo.south west) + (2mm,-3mm)$) -- ({$(logo.south west) + (2,-3mm)$} -| {$(current page.east) + (-5mm,0)$});
+    \draw[line width=0.5pt]
+      ($(logo.south west) + (2mm,-2.35mm)$) -- ({$(logo.south west) + (2,-2.35mm)$} -| {$(current page.east) + (-5mm,0)$});  
+
+    \coordinate (columns_anchor) at  ($(logo.south west) + (2mm,-10mm)$);
+    <% pagepart = :bottom %>
+<% else %>
+  \end{tikzpicture}
+    <% pagepart = :top %>
+<% end %>

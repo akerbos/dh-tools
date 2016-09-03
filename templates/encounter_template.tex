@@ -1,0 +1,77 @@
+<%
+# Copyright 2016, Raphael Reitzig
+#
+# dh-tools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dh-tools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
+%>
+\documentclass{article}
+
+\usepackage[a4paper,vmargin=15mm,hmargin={20mm,10mm}]{geometry}
+\usepackage{tikz,relsize,textgreek,adjustbox}
+
+\usepackage{fontspec}
+\setmainfont{<%= fill_font %>}[Scale=1]
+
+\usepackage{hyperref}
+
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
+
+\pagestyle{empty}
+
+\begin{document}%
+
+{\fontspec{<%= header_font %>}[Scale=3]<%= encounter["title"] %>}
+
+<% encounter["groups"].each_pair { |group,creatures| %>
+\vspace{\baselineskip}%
+<% if !group.empty? then %>{\fontspec{<%= header_font %>}[Scale=1.5]<%= group.to_s %>}\\[0.5\baselineskip]<% end %>
+\begin{tikzpicture}
+  <% ctr = 0 %>
+  
+  <% creatures.each_with_index { |creature| %>  
+    <% (1..creature["number"]).each { |_| %>
+      <% if ctr % 2 != 0 %>
+        \fill[gray!25] (0,-<%= 17*ctr - 1 %>mm) rectangle +(\linewidth,-17mm);
+      <% end %>
+    
+      % Conditions
+      <% [0,1,2].each { |i|     
+           (1..creature["conditions"][i]).each { |j| 
+             nr = creature["conditions"].take(i).inject(:+).to_i + j - 1 %>
+             \draw[fill=white,line width=<%= 0.5 + i*0.75 %>pt] (<%= 55 + j*5.5 %>mm,-<%= 17*ctr + 4.5 + i*5 %>mm) rectangle ++(4mm,4mm);
+      <%   } 
+         } %>
+         
+      % Turn markers
+      \draw[fill=white] <% (0..2).each { |i| (0..3).each { |j| %>
+        (<%= 91 + j*5 %>mm,-<%= 17*ctr + 2.5 + i*5 %>mm) circle [radius=2mm]
+      <% } } %>;
+      
+      % Freetext box
+      \draw[thin,gray,fill=white] (116mm,-<%= 17*ctr + 1.5 %>mm) rectangle +(60mm,-12mm);
+  
+      <% ctr += 1 %>     
+    <% } %>
+    
+    % Name
+    \node[anchor=west,scale=2,black] at (2mm,-<%= 17*(ctr - creature["number"]) + 7.5 %>mm) 
+      {\begin{adjustbox}{max width=2.6cm}<%= creature["name"] %>\end{adjustbox}};
+  <% } %>
+  
+  \draw[gray,semithick] (0,1mm) rectangle +(\linewidth,-<%= 17*ctr %>mm);
+\end{tikzpicture}%
+<% } %>
+
+\end{document}
+

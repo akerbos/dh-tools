@@ -1,0 +1,20 @@
+{
+  "name" : "Spade of Digging",
+  "image" : "spade.png",
+  "owner" : "Everybody",
+  "aspects" : {
+    "function" : "Is that rock or butter?",
+    "flaw" : "Where do you hold this?!"
+  },
+  "stunts" : [
+    "Gain **+2** when you **Forcefully** **Overcome** an obstacle made of rock.",
+    "Your other stunt here.",
+    "Your final stunt here."
+  ],
+  "certified" : {
+    "use"    : true,
+    "civilians" : false,
+    "public" : true,
+    "reproduction" : true
+  }
+}

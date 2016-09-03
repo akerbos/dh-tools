@@ -1,0 +1,133 @@
+<%
+# Copyright 2016, Raphael Reitzig
+#
+# dh-tools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dh-tools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
+%>
+<%- item = gear -%>
+\documentclass{article}
+
+\usepackage[a6paper,landscape,margin=3mm]{geometry}
+\usepackage{tikz,graphicx,textgreek,xifthen,tcolorbox,adjustbox}
+\usetikzlibrary{calc,positioning}
+\tcbuselibrary{skins}
+
+\usepackage{fontspec}
+\setmainfont{<%= fill_font %>}[Scale=1]
+
+\newcommand{\dhbox}[5]{%
+  \def\cornerrad{#3}
+  \def\side{#2}
+  % TODO plain if smaller, stretch if larger than 58px?
+  \ifthenelse{\isempty{#5}}{
+    \draw[line width=1mm]
+      ($#1$)
+        -- ++(0,\side/2) 
+        -- ++(\cornerrad,\cornerrad) -- ++(\side,0) 
+        -- ++(\cornerrad,-\cornerrad) -- ++(0,-\side)
+        -- ++(-\cornerrad,-\cornerrad) -- ++(-\side,0)
+        -- ++(-\cornerrad,\cornerrad) -- cycle;
+  }{%
+    \draw[line width=#4,fill stretch image=#5]
+      ($#1$)
+        -- ++(0,\side/2) 
+        -- ++(\cornerrad,\cornerrad) -- ++(\side,0) 
+        -- ++(\cornerrad,-\cornerrad) -- ++(0,-\side)
+        -- ++(-\cornerrad,-\cornerrad) -- ++(-\side,0)
+        -- ++(-\cornerrad,\cornerrad) -- cycle;
+  }
+}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{hyperref}
+
+\begin{document}
+  \begin{tikzpicture}[x=1cm,y=1cm] %overlay,remember picture
+    \node[anchor=north west,inner sep=0pt] (logo) at (0,0) 
+      {\includegraphics[width=5cm]{<%= logo %>}};
+    
+    <% if item.has_key?("certified") && !item["certified"].empty? %>  
+    % Certification
+    \node[anchor=north east,align=left,text width=4.75cm] (certs) at (14,0)
+      {\fontspec{<%= form_font %>}[Scale=0.6]\vspace*{-1ex}%%
+       {\fontspec{<%= header_font %>}[Scale=0.75] Certified For} \newline\vspace*{-1ex}%
+       [{\fontspec{<%= fill_font %>}[Scale=0.75]<%= item["certified"]["use"] %>}] Use by Brotherhood agents (as per §3 CBCT) \newline\vspace*{-1ex}%
+       [{\fontspec{<%= fill_font %>}[Scale=0.75]<%= item["certified"]["civilians"] %>}] Use by civilians (§17.3 applies) \newline\vspace*{-1ex}%
+       [{\fontspec{<%= fill_font %>}[Scale=0.75]<%= item["certified"]["public"] %>}] Public exposure \newline
+       [{\fontspec{<%= fill_font %>}[Scale=0.75]<%= item["certified"]["reproduction"] %>}] Reproduction (note §17.11)
+      };
+    <% end %>
+      
+    % Separator lines
+    \draw[line width=1.3pt] ($(logo.south west) + (2mm,-3mm)$) -- +(138mm,0);
+    \draw[line width=0.5pt] ($(logo.south west) + (2mm,-2.35mm)$) -- +(138mm,0); 
+      
+    % Name, Owner
+    \node[anchor=north west, inner sep=0] (name) at ($(logo.south west) + (2mm,-6mm)$) 
+      {\fontspec{<%= header_font %>}Name};
+    \node[anchor=east] at ($(name.west) + (65mm,0)$)
+      {\begin{adjustbox}{max width=5cm}<%= item["name"] %>\end{adjustbox}};
+    \draw[thick] ($(name.south west) + (0,-1mm)$) -- +(65mm,0);
+    
+    \node[anchor=north west, inner sep=0] (owner) at ($(name.south west) + (0,-3mm)$) 
+      {\fontspec{<%= header_font %>}Owner};
+    \node[anchor=east] at ($(owner.west) + (65mm,0)$)
+      {\begin{adjustbox}{max width=5cm}<%= item["owner"]["linkedname"] || item["owner"]["name"] %>\end{adjustbox}};
+    \draw[thick] ($(owner.south west) + (0,-1mm)$) -- +(65mm,0);
+    
+    % Aspects
+    \node[anchor=north west, inner sep=0] (aspects) at ($(owner.south west) + (0,-3mm)$) 
+      {\fontspec{<%= header_font %>}Aspects};
+    \draw[gray]
+      ($(aspects.south west) + (0,-2mm)$) rectangle +(65mm,-5mm)
+      ($(aspects.south west) + (0,-8mm)$) rectangle +(65mm,-5mm);
+    \node[anchor=north east,inner sep=0pt,gray] (concept) at ($(aspects.south west) + (64mm,-2.5mm)$)
+      {\fontspec{<%= boxlabel_font %>}[Scale=0.5]FUNCTION};
+    \node[anchor=west] at ($(aspects.south west) + (0mm, -4.5mm)$)
+      {\begin{adjustbox}{max width=6cm}<%= item["aspects"]["function"] %>\end{adjustbox}};
+    \node[anchor=north east,inner sep=0pt,gray] (concept) at ($(aspects.south west) + (64mm,-8.5mm)$)
+      {\fontspec{<%= boxlabel_font %>}[Scale=0.5]FLAW};
+    \node[anchor=west] at ($(aspects.south west) + (0mm, -10.5mm)$)
+      {\begin{adjustbox}{max width=6cm}<%= item["aspects"]["flaw"] %>\end{adjustbox}};
+    \draw[thick] ($(aspects.south west) + (0,-14mm)$) -- +(65mm,0);
+    
+    % Stunts
+    \node[anchor=north west, inner sep=0] (stunts) at ($(aspects.south west) + (0,-16mm)$) 
+      {\fontspec{<%= header_font %>}Stunts};
+    \node[text width=62mm,inner sep=1.5mm,align=left,draw,color=gray,text=black,anchor=north west] (stuntbox) 
+      at ($(stunts.south west) + (0,-2mm)$) {\vspace{-1mm}%
+      <% item["stunts"].each { |s| %>
+        <%= s %><% if s != item["stunts"].last %>\newline<% end %>
+      <% } %>
+      };
+      
+    % Legacy version, similar to original char sheet
+    %\draw[semithick,gray]
+    %  ($(stunts.south west) + (0,-14mm)$) -- +(65mm,0)
+    %  ($(stunts.south west) + (0,-28mm)$) -- +(65mm,0)
+    %  ($(stunts.south west) + (0,-42mm)$) -- +(65mm,0);
+    %\node[anchor=south west,inner sep=2pt] at ($(stunts.south west) + (0,-14mm)$)
+    %  {\begin{adjustbox}{max totalheight=12.5mm,minipage=63mm}<%= %>\end{adjustbox}};
+    %\node[anchor=south west,inner sep=2pt] at ($(stunts.south west) + (0,-28mm)$)
+    %  {\begin{adjustbox}{max totalheight=12.5mm,minipage=63mm}<%= %>\end{adjustbox}};
+    %\node[anchor=south west,inner sep=2pt] at ($(stunts.south west) + (0,-42mm)$)
+    %  {\begin{adjustbox}{max totalheight=12.5mm,minipage=63mm}<%= %>\end{adjustbox}};
+    
+    \coordinate (ref1) at ($(logo.south west) + (2mm,-3mm)$);
+    \coordinate (ref2) at ($(stunts.south west) + (0,-42mm)$);
+    
+    %\dhbox{(ref1)!0.5!(ref2)  + (75mm, 0)}{38mm}{10mm}{1.3pt}{<%= item["image"] %>}
+    \dhbox{(ref1)  + (75mm, -40mm)}{38mm}{10mm}{1.3pt}{<%= item["image"] %>}
+  \end{tikzpicture}
+\end{document}

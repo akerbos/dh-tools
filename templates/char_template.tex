@@ -1,0 +1,117 @@
+<%
+# Copyright 2016, Raphael Reitzig
+#
+# dh-tools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# dh-tools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
+%>
+\documentclass{article}
+
+\usepackage{fontspec}
+\usepackage{textgreek}
+\usepackage{changepage,pdfpages,tikz,relsize,xifthen,adjustbox}
+\pagestyle{empty}
+
+\setmainfont{<%= fill_font %>}[Scale=1]
+
+\begin{document}
+
+
+\includepdf[pages=1,pagecommand={%
+  \AddToShipoutPictureBG*{\put(0,0){%
+    \begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm,%
+                        every node/.style={anchor=west}]%  
+      % Name
+      %
+      \node[scale=2] (name) at (2.7,22.4) 
+        {\begin{adjustbox}{max width=4.1cm}<%= char["name"] %>\end{adjustbox}};
+      %
+      % Description
+      %
+      \node[anchor=north west,text width=10cm,align=left] (desc) at (1.3,21.4)
+        {<%= char["description"] %>};
+      %
+      % Aspects
+      %
+      \node[scale=1.5] at (1.3,18.15)
+        {\begin{adjustbox}{max width=5.7cm}<%= char["aspects"]["concept"] %>\end{adjustbox}};
+      \node[scale=1.5] at (1.3,17)
+        {\begin{adjustbox}{max width=5.7cm}<%= char["aspects"]["trouble"] %>\end{adjustbox}};
+      \node[scale=1.5] at (1.3,15.9)
+        {\begin{adjustbox}{max width=5.7cm}<%= char["aspects"]["discipline"][0][1] %>\end{adjustbox}};
+        \fill[white] (10, 15.85) rectangle +(1.3, 0.5);
+        \node[anchor=north east,inner sep=0pt,gray] at (11.2, 16.325)
+          {\fontspec{<%= boxlabel_font %>}[Scale=0.85]<%= char["aspects"]["discipline"][0][0] %>};
+      \node[scale=1.5] at (1.3,14.75)
+        {\begin{adjustbox}{max width=5.7cm}<%= char["aspects"]["discipline"][1][1] %>\end{adjustbox}};
+        \fill[white] (10, 14.7) rectangle +(1.3, 0.5);
+        \node[anchor=north east,inner sep=0pt,gray] at (11.2, 15.175)
+          {\fontspec{<%= boxlabel_font %>}[Scale=0.85]<%= char["aspects"]["discipline"][1][0] %>};
+      \node[scale=1.5] at (1.3,13.65)
+        {\begin{adjustbox}{max width=5.7cm}<%= char["aspects"]["discipline"][2][1] %>\end{adjustbox}};
+        \fill[white] (10, 13.6) rectangle +(1.3, 0.5);
+        \node[anchor=north east,inner sep=0pt,gray] at (11.2, 14.075)
+          {\fontspec{<%= boxlabel_font %>}[Scale=0.85]<%= char["aspects"]["discipline"][2][0] %>};
+      %
+      % Approaches
+      %
+      \node[scale=2.5,anchor=center] at (5.5,11.75) {<%= char["approaches"]["careful"] %>};
+      \node[scale=2.5,anchor=center] at (7.15,11.75) {<%= char["approaches"]["quick"] %>};
+      \node[scale=2.5,anchor=center] at (5.5,10.6)  {<%= char["approaches"]["clever"] %>};
+      \node[scale=2.5,anchor=center] at (7.15,10.6)  {<%= char["approaches"]["forceful"] %>};
+      \node[scale=2.5,anchor=center] at (5.5,9.45)  {<%= char["approaches"]["sneaky"] %>};
+      \node[scale=2.5,anchor=center] at (7.15,9.45)  {<%= char["approaches"]["flashy"] %>};
+      %
+      % Disciplines
+      %  
+      \node[scale=2.5,anchor=center] at (2.125,7.35)  {<%= char["disciplines"]["combat"] %>};
+      \node[scale=2.5,anchor=center] at (2.125,6.25) {<%= char["disciplines"]["covert"] %>};
+      \node[scale=2.5,anchor=center] at (2.125,5.05)  {<%= char["disciplines"]["mystic"] %>};
+      \node[scale=2.5,anchor=center] at (2.125,3.95) {<%= char["disciplines"]["research"] %>};
+      \node[scale=2.5,anchor=center] at (2.125,2.85)  {<%= char["disciplines"]["social"] %>};
+      \node[scale=2.5,anchor=center] at (2.125,1.7)  {<%= char["disciplines"]["fringe"][2] %>};
+      % Fringe discipline 
+      \fill[white] (2.7, 1.5) rectangle (4.5, 2);
+      \node[scale=0.9] (fringe) at (2.88, 1.75) {%
+        \textlarger{%
+          \ifthenelse{\isempty{<%= char["disciplines"]["fringe"] %>}}{%
+          }{%
+            \fontspec{<%= form_font %>}%
+            <%= char["disciplines"]["fringe"][0] %>}%
+          }%
+      };
+      %
+      % Devotion
+      %
+      \node[scale=2.5,anchor=center] (devotion) at (14.9,24.2) {<%= char["devotion"] %>};
+      %
+      % Chapter
+      %
+      \node[scale=4,anchor=center] (chapter) at (18.5,25.2) {%
+        {\textsmaller{\fontspec{lmroman10regular}\text<%= char["chapter"][0] %>}}%
+        <%= char["chapter"][1] %>%
+      };
+      %
+      % Stunts
+      %
+      %\fill[white] (11.9,12) rectangle +(8.5cm,-11cm);
+      \node[text width=8cm,inner sep=1.5mm,align=left,draw,color=gray,fill=white,text=black,anchor=north west] 
+        (stuntbox) at (11.9,12) {%
+        <% char["stunts"].each { |s| -%>
+          <%= s %><% if s != char["stunts"].last %>\newline\newline%<% end %>
+        <% } -%>
+        };
+    \end{tikzpicture}%
+  }}%
+}]{<%= charsheet %>}%
+
+\end{document}
