@@ -1,4 +1,4 @@
-# Tools for Demon Hunters GMs
+# Tools for Demon Hunters
 
 This project is an attempt to help GMs and Players of the 
   [Demon Hunters RPG](http://www.demonhuntersrpg.com/)
@@ -112,11 +112,15 @@ about problems with your JSON. Please take not of any messages that appear.
 ### Character Sheet
 
 Files of the form `name.char` are translated into character sheets.  
-See [`examples/testC.char`]() for a complete example.
+See 
+  [`examples/testC.char`](https://github.com/akerbos/dh-tools/blob/master/examples/testC.char) 
+for a complete example.
 
 The template basically fills in the official character sheet. I added some
 cute details such as a short form of the Discipline's name in its Aspect box and
 proper display of Fringe disciplines.
+
+![Example character sheet](https://github.com/akerbos/dh-tools/blob/master/examples/example_char.png)
 
 **Note:**
 
@@ -139,7 +143,11 @@ proper display of Fringe disciplines.
 Files of the form `name.chapter` are translated into chapter sheets;
 they are meant to summarize the most important information (for the GM)
 about the whole chapter in compact form.  
-See [`examples/test.chapter`]() for a complete example.
+See 
+  [`examples/test.chapter`](https://github.com/akerbos/dh-tools/blob/master/examples/test.chapter) 
+for a complete example.
+
+![Example chapter](https://github.com/akerbos/dh-tools/blob/master/examples/example_chapter.png)
 
 **Note:**
 
@@ -153,7 +161,11 @@ See [`examples/test.chapter`]() for a complete example.
 Files of the form `name.gear` are translated into chapter sheets;
 they are meant to summarize the most important information (for the GM)
 about the whole chapter in compact form.  
-See [`examples/testG.gear`]() for a complete example.
+See 
+  [`examples/testG.gear`](https://github.com/akerbos/dh-tools/blob/master/examples/testG.gear) 
+for a complete example.
+
+![Example item](https://github.com/akerbos/dh-tools/blob/master/examples/example_gear.png)
 
 **Note:**
 
@@ -172,11 +184,15 @@ See [`examples/testG.gear`]() for a complete example.
 
 Files of the form `name.encounter` are translated into encounter sheets;
 they are meant to help GMs track data during combat encounters.  
-See [`examples/testE.encounter`]() for a complete example.
+See 
+  [`examples/testE.encounter`](https://github.com/akerbos/dh-tools/blob/master/examples/testE.encounter) 
+for a complete example.
 
 Currently, the sheets support grouping characters and creatures,
 repeating the same creature multiple times, tracking of conditions,
 tracking of turns and some free text.
+
+![Example encounter](https://github.com/akerbos/dh-tools/blob/master/examples/example_encounter.png)
 
 **Note:**
 
