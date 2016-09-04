@@ -169,6 +169,14 @@ for a complete example.
 
 ![Example item](https://github.com/akerbos/dh-tools/blob/master/examples/example_gear.png)
 
+The Demon Hunters rulebook contains nothing about gear; we should model most
+if not everything using Aspects. However, I found that special circumstance
+can warrant characters having personalized items; for instance, mad scientists
+probably gain something that is more than a prototype at some point.
+I looked to the 
+  [Gadgets and Gear](http://fate-srd.com/fate-system-toolkit/gadgets-and-gear)
+section of the Fate System Toolkit for how to do it.
+
 **Note:**
 
  * `owner` can contain either the name of a character file (without the ending)
