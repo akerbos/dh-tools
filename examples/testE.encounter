@@ -15,9 +15,15 @@
         "conditions" : [3,2]
       },
       {
-        "name" : "Minion Foe",
+        "name" : "Small Foe",
         "conditions" : [2,1],
-        "number" : 3  
+        "number" : 2  
+      },
+      {
+        "name" : "Minion",
+        "mob" : 21,
+        "conditions" : 12,
+        "number" : 2  
       }
     ],
     // Some blank entries in case we need to add something spontaneously.

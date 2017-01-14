@@ -363,13 +363,26 @@ def read_encounter(file, quiet=true)
         creature = group[i]
       end
       
-      if !creature.has_key?("conditions")
-        puts "Warning: #{creature["name"]} has no conditions" unless quiet
-        creature["conditions"] = []
+      if !creature.has_key?("mob")
+        creature["mob"] = 0
+      end
+      creature["mob"] = creature["mob"].to_i
+      
+      if creature["mob"] > 0
+        creature["name"] = "Mob of #{creature["mob"]} #{creature["name"]}s"
       end
       
-      creature["conditions"].map! { |e| e.to_i }
-      creature["conditions"] += [0,0,0]
+      if !creature.has_key?("conditions")
+        puts "Warning: #{creature["name"]} has no conditions" unless quiet
+        creature["conditions"] = creature["mob"] > 0 ? 0 : []
+      end
+      
+      if creature["mob"] > 0
+        creature["conditions"] = creature["conditions"].to_i
+      else
+        creature["conditions"].map! { |e| e.to_i }
+        creature["conditions"] += [0,0,0]
+      end
       
       if !creature.has_key?("number")
         creature["number"] = 1

@@ -46,12 +46,20 @@
       <% end %>
     
       % Conditions
-      <% [0,1,2].each { |i|     
-           (1..creature["conditions"][i]).each { |j| 
-             nr = creature["conditions"].take(i).inject(:+).to_i + j - 1 %>
-             \draw[fill=white,line width=<%= 0.5 + i*0.75 %>pt] (<%= 55 + j*5.5 %>mm,-<%= 17*ctr + 4.5 + i*5 %>mm) rectangle ++(4mm,4mm);
-      <%   } 
-         } %>
+      <% if creature["mob"] > 0 
+          (0..creature["conditions"]/5).each { |i|
+            (1..[5, creature["conditions"] - i*5].min).each { |j| %>
+              \draw[fill=white,line width=0.5pt] (<%= 55 + j*5.5 %>mm,-<%= 17*ctr + 4.5 + i*5 %>mm) rectangle ++(4mm,4mm);
+      <%    }
+          }
+         else 
+           [0,1,2].each { |i|     
+             (1..creature["conditions"][i]).each { |j| 
+               nr = creature["conditions"].take(i).inject(:+).to_i + j - 1 %>
+               \draw[fill=white,line width=<%= 0.5 + i*0.75 %>pt] (<%= 55 + j*5.5 %>mm,-<%= 17*ctr + 4.5 + i*5 %>mm) rectangle ++(4mm,4mm);
+        <%   } 
+           } 
+         end %>
          
       % Turn markers
       \draw[fill=white] <% (0..2).each { |i| (0..3).each { |j| %>
