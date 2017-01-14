@@ -144,7 +144,6 @@ files.each { |file|
   puts data.images.to_s if debug
   data.images.each { |f| FileUtils::cp("#{USERDIR}/#{f}", "./") }
   `lualatex -file-line-error -interaction=nonstopmode "#{jobname}.tex"`
-  `lualatex -file-line-error -interaction=nonstopmode "#{jobname}.tex"` if jobtype == :chapter
 
 
   # Create a small version

@@ -15,7 +15,7 @@
 # along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
 %>
 <% if pagepart == :top %>
-  \begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm]
+  \begin{tikzpicture}[x=1cm,y=1cm]
     \node[anchor=north west,inner sep=0pt] (logo) 
       at ($(current page.north west) + (<%= if fold then 15 else 5 end %>mm,-5mm)$)
       {\includegraphics[width=5cm]{<%= logo %>}};
