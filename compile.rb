@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-# Copyright 2016, Raphael Reitzig
+# Copyright 2016-2017, Raphael Reitzig
 #
 # dh-tools is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

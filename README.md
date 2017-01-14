@@ -13,7 +13,7 @@ Currently, this includes
  * postage stamps.
 
 If you have any questions or suggestions, don't hesitate to 
-  [open an issue](https://github.com/akerbos/dh-tools/issues/new).
+  [open an issue](https://github.com/akerbos/dh-tools/issues/new)!
 
 ## Setup
 
@@ -25,7 +25,7 @@ You need the following software.
    
  * [Pandoc](http://pandoc.org/)
  
- * LuaLaTeX and PDFLaTeX (e.g. from [TeX Live](https://www.tug.org/texlive/))
+ * LuaLaTeX (e.g. from [TeX Live](https://www.tug.org/texlive/))
  
  * `pdftk` (optional)
  
@@ -36,16 +36,8 @@ your `PATH`.
 
 ### Missing resources
 
-You will have to provide a couple of files I can not distribute due to
+You will have to provide the fonts since I can not distribute them due to
 the respective licenses. Put them all into `resources`.
-
- * `dh_logo.png` -- used on chapter sheets and item cards.  
-   I use the one from the original character sheet; use a PDF viewer to
-   extract it and then cut it to the exact dimensions the dummy file has.
-   
- * `dh_icon.png` -- used on the postage stamps.  
-   I use the Brotherhood crest cut from the logo. Cut to the same size as
-   the dummy as well.
    
  * `ARJULIAN.ttf` -- used for headlines on all sheets.  
     Find it e.g. [here](http://www.fontzone.net/font-details/ar-julian).
@@ -58,15 +50,23 @@ the respective licenses. Put them all into `resources`.
     boxes.  
     Find it e.g. [here](http://ufonts.com/fonts/futura-lt-condensed-light.html).
  
-While you are certainly welcome to experiment with other images and fonts
-(check out `CONSTANTS` in `compile.rb`),
-note that the designs are tailored to the measures of the ones above. You
-will *probably* mess up the sheets in some way. 
-If you don't know your way around TikZ, I recommend you stay clear.
-
 *Note bene:* I do not redistribute the original character sheet, but the script
 will download it (once) from the official site if it is missing.
 
+### Using other resources
+
+While you are certainly welcome to experiment with other images and fonts
+(check out `CONSTANTS` in `compile.rb`),
+note that the designs are tailored to the measures of the ones I have used. 
+You will *probably* mess up the sheets in some way. 
+If you don't know your way around TikZ, I recommend you stay clear.
+
+### Paper format
+
+Chapter, encounter and gear sheets use A4 resp. A6 paper formats. There is no
+option for creating formats used in the US; that would be quite the effort.
+I recommend you just create the A4/A6 sheets and let your printer driver
+fit them onto whatever paper format you happen to have handy.
 
 
 ## Usage
@@ -86,15 +86,15 @@ You will get some messages printed to your command line, and after a little
 while a PDF should appear.
 
 As a general rules, the script tries to supply reasonable defaults or warn you
-about problems with your JSON. Please take not of any messages that appear.
+about problems with your JSON. Please take note of any messages that appear.
 
 ### Options
 
  * `--debug` -- if set, the temporary folder is not deleted so you can inspect
     the generated LaTeX and log files.
 
- * `--fold` -- this option affects chapter sheets only. If you want to punch
-    the sheet on the left, short side (and presumably fold it to A5), set this
+ * `--folded` -- this option affects chapter sheets only. If you want to punch
+    the sheet on the left short side (and presumably fold it to A5), set this
     option. Otherwise, there won't be enough room for punching.
     
  * `--concat=file` -- by default, `compile.rb` will create one PDF per input
@@ -106,7 +106,7 @@ about problems with your JSON. Please take not of any messages that appear.
 
  * `--small` -- the original character sheet is quite large, thanks to a rather
    big background image. If a 3MB file is too large for your purposes, you
-   can set this option
+   can set this option.
    
    Requires [`gs` from Ghostscript](http://www.ghostscript.com/).
    
@@ -131,7 +131,7 @@ proper display of Fringe disciplines.
  * Discipline `fringe` should be either `nil` or an array of the form
     `["Pyrokinetic", "Pyro", 6]`; the short string appears in the Aspect box,
     if there is any.
- * Discipline Aspects use the same keys as the list if Disciplines.
+ * Discipline Aspects use the same keys as the list of Disciplines.
  * `conditions` should contain an array of the form `[3,2,1]` -- first the number 
    of mild, then moderate, then severe Conditions the character can take.
    
@@ -156,13 +156,12 @@ for a complete example.
  * `members`, `temps`, `leader` and `gear` contain filenames of character
    resp. item files without the file endings.
  * Player characters should appear in `member`; `temps` is for important NPCs.
-   The presentation is no different, but temps go last.
+   The presentation is not different, but temps go last.
 
 ### Item Card
 
-Files of the form `name.gear` are translated into chapter sheets;
-they are meant to summarize the most important information (for the GM)
-about the whole chapter in compact form.  
+Files of the form `name.gear` are translated into item cards that players and
+GMs can use to keep track of the cool property of the most precious gear.  
 See 
   [`examples/testG.gear`](https://github.com/akerbos/dh-tools/blob/master/examples/testG.gear) 
 for a complete example.
@@ -209,28 +208,25 @@ tracking of turns and some free text.
  * Entries in each group are either a string (name of a character file
     without the ending) or an object `{ ... }` with at least a `name`
     and `conditions`.
+ * Make an entry for mobs by setting `mob` to the number of creatures in the mob.
+ * Create multiple entries of the same creature by setting `number` to the
+   desired number.
 
 
 ### Postage Stamp
 
-This is just a plain LaTeX file you can compile with `pdflatex`.
+This is just a plain LaTeX file you can compile with `lualatex`.
 The resulting PDF contains a made-up pre-paid stamp to use on in-game
 artifacts sent by Brotherhood administrators.
 
 Currently, there are English and German versions.
 
-
-### Paper format
-
-Chapter, encounter and gear sheets use A4 resp. A6 paper formats. There is no
-option for creating formats used in the US; that would be quite the effort.
-I recommend you just create the A4/A6 sheets and let your printer driver
-fit them onto whatever paper format you happen to have handy.
+![Postage stamps](https://github.com/akerbos/dh-tools/blob/master/examples/example_postage.png)
 
 
 ## License
 
-Copyright 2016, Raphael Reitzig
+Copyright 2016-2017, Raphael Reitzig
 
 dh-tools is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -250,6 +246,8 @@ along with dh-tools. If not, see <http://www.gnu.org/licenses/>.
 Game terms have been taken from the publication *Demon Hunters: A Comedy of Terror*,
 published by Dead Gentlemen Productions, LLC, in accordance with the
 Open Game License.
+
+Logo graphics republished with kind permission of Dead Gentlemen Productions.
 
 Demon Hunters: A Comedy of Terrors, Copyright 2015, Dead Gentlemen
 Productions, LLC; Authors Cam Banks, Jimmy McMichael, Don Early,
