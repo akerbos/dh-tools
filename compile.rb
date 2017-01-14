@@ -26,7 +26,8 @@ USERDIR = Dir.pwd
 
 # First, there are things we need for building the documents.
 CONSTANTS = {
-  :charsheet      => "DHRPG_Character_Sheet_Print-n-Fill.pdf",
+  :charsheet_url  => "http://demonhuntersrpg.com/downloads/PDFs/DHRPG_Character_Sheet_Print-n-Fill.pdf",
+  :charsheet      => "dh_charsheet.pdf",
   :logo           => "dh_logo.png",
 
   :header_font    => "ARJULIAN.ttf",
@@ -37,7 +38,7 @@ CONSTANTS = {
 
 # Now let's see what the user has for us.
 if ARGV.size == 0
-  puts "Usage: compile [--debug] [--fold] [--concat=file] file.." 
+  puts "Usage: compile [--debug] [--folded] [--small] [--concat=file] file.." 
   Process.exit
 end
 
@@ -49,7 +50,7 @@ small = false
 concat = nil
 ARGV.each { |arg|
   case arg
-  when /^--fold$/
+  when /^--folded$/
     fold = true
   when /^--debug$/
     debug = true
@@ -97,7 +98,7 @@ files.each { |file|
     if !File.exist?("#{SCRIPTDIR}/resources/#{CONSTANTS[:charsheet]}")
       require 'net/http'
       File.write("#{SCRIPTDIR}/resources/#{CONSTANTS[:charsheet]}", 
-                 Net::HTTP.get(URI.parse("http://demonhuntersrpg.com/downloads/PDFs/#{CONSTANTS[:charsheet]}")))
+                 Net::HTTP.get(URI.parse(CONSTANTS[:charsheet_url])))
     end
     latex_aux << :charsheet
   when :chapter
